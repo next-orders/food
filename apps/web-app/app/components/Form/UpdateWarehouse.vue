@@ -47,8 +47,8 @@ const emit = defineEmits(['success', 'submitted'])
 
 const { t } = useI18n()
 const toast = useToast()
-const { refresh: refreshChannelData, channel } = await useChannel()
-const warehouse = computed(() => channel.value?.warehouses?.find((w) => w.id === warehouseId))
+const channel = useChannelStore()
+const warehouse = computed(() => channel.warehouses.find((w) => w.id === warehouseId))
 
 const state = ref<Partial<WarehouseUpdateSchema>>({
   name: warehouse.value?.name,
@@ -86,7 +86,7 @@ async function onSubmit(event: FormSubmitEvent<WarehouseUpdateSchema>) {
   }
 
   if (data.value) {
-    await refreshChannelData()
+    await channel.update()
     emit('success')
     toast.add({ title: t('toast.warehouse-updated'), description: t('toast.updating-data') })
     resetState()

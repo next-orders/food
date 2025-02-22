@@ -2,7 +2,6 @@
   <UModal :title="$t('center.update.menu-category')">
     <template #body>
       <FormUpdateMenuCategory
-        :menu-id="menuId ?? ''"
         :category-id="categoryId"
         :is-opened="modal.isOpen.value"
         @submitted="modal.close()"
@@ -14,7 +13,6 @@
 
 <script setup lang="ts">
 defineProps<{
-  menuId?: string
   categoryId: string
 }>()
 

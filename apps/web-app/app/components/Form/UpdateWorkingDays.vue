@@ -1,6 +1,6 @@
 <template>
   <form class="space-y-4" @submit="onSubmit">
-    <div v-for="day in channel?.workingDays" :key="day.id">
+    <div v-for="day in channel.workingDays" :key="day.id">
       <div class="grid grid-cols-2 gap-4">
         <UFormField :label="`${getLocalizedDayOfWeek(day.day)}, ${$t('common.time-from')}`" :name="`${day.day}.open`">
           <UInput
@@ -43,7 +43,7 @@ const emit = defineEmits(['success', 'submitted'])
 
 const { t } = useI18n()
 const toast = useToast()
-const { channel, refresh: refreshChannelData } = await useChannel()
+const channel = useChannelStore()
 
 const days = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'] as const
 
@@ -61,9 +61,10 @@ function prepareWorkingDays() {
   }
 
   for (const day of days) {
+    const dayData = channel.workingDays.find((d) => d.day === day)
     preparedDays[day] = {
-      open: `${channel.value?.workingDays.find((d) => d.day === day)?.openHours.toString().padStart(2, '0')}:${channel.value?.workingDays.find((d) => d.day === day)?.openMinutes.toString().padStart(2, '0')}`,
-      close: `${channel.value?.workingDays.find((d) => d.day === day)?.closeHours.toString().padStart(2, '0')}:${channel.value?.workingDays.find((d) => d.day === day)?.closeMinutes.toString().padStart(2, '0')}`,
+      open: `${dayData?.openHours.toString().padStart(2, '0')}:${dayData?.openMinutes.toString().padStart(2, '0')}`,
+      close: `${dayData?.closeHours.toString().padStart(2, '0')}:${dayData?.closeMinutes.toString().padStart(2, '0')}`,
     }
   }
 
@@ -95,7 +96,7 @@ async function onSubmit() {
   }
 
   if (data.value) {
-    await refreshChannelData()
+    await channel.update()
     emit('success')
     toast.add({ title: t('toast.opening-hours-updated'), description: t('toast.updating-data') })
   }

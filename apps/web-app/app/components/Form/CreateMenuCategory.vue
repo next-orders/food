@@ -39,7 +39,7 @@ const emit = defineEmits(['success'])
 
 const { t } = useI18n()
 const toast = useToast()
-const { refresh: refreshChannelData } = await useChannel()
+const channel = useChannelStore()
 
 const state = ref<Partial<MenuCategoryCreateSchema>>({
   name: undefined,
@@ -75,7 +75,7 @@ async function onSubmit(event: FormSubmitEvent<MenuCategoryCreateSchema>) {
   }
 
   if (data.value) {
-    await refreshChannelData()
+    await channel.update()
     emit('success')
     toast.add({ title: t('toast.category-created'), description: t('toast.updating-data') })
     resetState()

@@ -18,6 +18,6 @@ const { paymentMethodId } = defineProps<{
 }>()
 
 const { icons } = useAppConfig()
-const { channel } = await useChannel()
-const paymentMethod = computed(() => channel.value?.paymentMethods.find((p) => p.id === paymentMethodId))
+const channel = useChannelStore()
+const paymentMethod = computed(() => channel.paymentMethods.find((p) => p.id === paymentMethodId))
 </script>

@@ -34,5 +34,5 @@ const { categoryId } = defineProps<{
 }>()
 
 const channel = useChannelStore()
-const category = channel.getMenuCategory(categoryId)
+const category = channel.getActiveMenuCategory(categoryId)
 </script>

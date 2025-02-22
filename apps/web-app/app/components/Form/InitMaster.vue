@@ -81,7 +81,7 @@ const emit = defineEmits(['success'])
 
 const { t } = useI18n()
 const toast = useToast()
-const { refresh: refreshChannelData } = await useChannel()
+const channel = useChannelStore()
 
 const isPasswordVisible = ref(false)
 
@@ -113,7 +113,7 @@ async function onSubmit(event: FormSubmitEvent<UserCreateSchema>) {
   }
 
   if (data.value) {
-    await refreshChannelData()
+    await channel.update()
     emit('success')
     toast.add({ title: t('toast.account-configured'), description: t('toast.updating-data') })
   }

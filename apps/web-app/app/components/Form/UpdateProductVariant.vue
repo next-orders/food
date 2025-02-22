@@ -132,7 +132,6 @@ const emit = defineEmits(['success', 'submitted'])
 const { t } = useI18n()
 const toast = useToast()
 const channel = useChannelStore()
-const { refresh: refreshChannelData } = await useChannel()
 const { refresh: refreshProducts, products } = await useProduct()
 
 const product = computed(() => products.value?.find((product) => product.id === productId))
@@ -190,7 +189,7 @@ async function onSubmit(event: FormSubmitEvent<ProductVariantUpdateSchema>) {
   }
 
   if (data.value) {
-    await refreshChannelData()
+    await channel.update()
     await refreshProducts()
     emit('success')
     toast.add({ title: t('toast.variant-updated'), description: t('toast.updating-data') })

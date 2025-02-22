@@ -32,7 +32,7 @@
       <Icon
         :name="icons.edit"
         class="w-5 h-5 text-neutral-500 cursor-pointer"
-        @click="modal.open(ModalUpdateMenuCategory, { categoryId: category.id, menuId: menu?.id })"
+        @click="modal.open(ModalUpdateMenuCategory, { categoryId: category.id })"
       />
     </div>
 

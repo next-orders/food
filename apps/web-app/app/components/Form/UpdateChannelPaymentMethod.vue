@@ -39,8 +39,8 @@ const emit = defineEmits(['success', 'submitted'])
 
 const { t } = useI18n()
 const toast = useToast()
-const { channel, refresh: refreshChannelData } = await useChannel()
-const paymentMethod = computed(() => channel.value?.paymentMethods.find((p) => p.id === paymentMethodId))
+const channel = useChannelStore()
+const paymentMethod = computed(() => channel.paymentMethods.find((p) => p.id === paymentMethodId))
 
 const state = ref<Partial<ChannelPaymentMethodUpdateSchema>>({
   name: paymentMethod.value?.name,
@@ -76,7 +76,7 @@ async function onSubmit(event: FormSubmitEvent<ChannelPaymentMethodUpdateSchema>
   }
 
   if (data.value) {
-    await refreshChannelData()
+    await channel.update()
     emit('success')
     toast.add({ title: t('toast.payment-method-updated'), description: t('toast.updating-data') })
     resetState()

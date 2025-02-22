@@ -34,12 +34,13 @@ export const useChannelStore = defineStore('channel', () => {
   const activeMenu = computed<MenuWithData | null>(() => menus.value.find((menu) => menu.isActive) || null)
   const activeCategories = computed<MenuCategoryWithData[]>(() => activeMenu.value ? activeMenu.value.categories : [])
   const activeProducts = computed<ProductWithData[]>(() => activeCategories.value.flatMap((category) => category.products.filter((p) => p.variants.length > 0)))
+  const allCategories = computed<MenuCategoryWithData[]>(() => menus.value.flatMap((menu) => menu.categories))
   const allProducts = computed<ProductWithData[]>(() => menus.value.flatMap((menu) => menu.categories.flatMap((category) => category.products)))
   const currencySign = computed<string>(() => currencyCode.value ? CURRENCY_SIGNS[currencyCode.value as CurrencyCode] : '')
   const isOnMaintenance = computed<boolean>(() => isActive.value === false || !activeMenu.value || (!isPickupAvailable.value && !isDeliveryAvailable.value))
   const isInitialized = computed<boolean>(() => !!id.value && !!masterAccountExists.value)
 
-  async function fetchData() {
+  async function update() {
     const { data } = await useFetch('/api/channel', {
       lazy: true,
       server: true,
@@ -71,9 +72,12 @@ export const useChannelStore = defineStore('channel', () => {
     return menus.value.find((menu) => menu.id === id) || null
   }
   function getMenuCategory(id: string): MenuCategoryWithData | null {
+    return allCategories.value.find((category) => category.id === id) || null
+  }
+  function getActiveMenuCategory(id: string): MenuCategoryWithData | null {
     return activeMenu.value?.categories.find((category) => category.id === id) || null
   }
-  function getMenuCategoryBySlug(slug: string): MenuCategoryWithData | null {
+  function getActiveMenuCategoryBySlug(slug: string): MenuCategoryWithData | null {
     return activeMenu.value?.categories.find((category) => category.slug === slug) || null
   }
   function getProduct(id: string): ProductWithData | null {
@@ -106,15 +110,17 @@ export const useChannelStore = defineStore('channel', () => {
     activeMenu,
     activeCategories,
     activeProducts,
+    allCategories,
     allProducts,
     currencySign,
     isOnMaintenance,
     isInitialized,
 
-    fetchData,
+    update,
     getMenu,
     getMenuCategory,
-    getMenuCategoryBySlug,
+    getActiveMenuCategory,
+    getActiveMenuCategoryBySlug,
     getProduct,
     getProductBySlug,
   }

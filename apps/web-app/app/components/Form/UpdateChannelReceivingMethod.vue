@@ -17,7 +17,7 @@ const emit = defineEmits(['success'])
 
 const { t } = useI18n()
 const toast = useToast()
-const { refresh: refreshChannelData } = await useChannel()
+const channel = useChannelStore()
 
 async function onSubmit() {
   const { data, error } = await useAsyncData(
@@ -34,7 +34,7 @@ async function onSubmit() {
   }
 
   if (data.value) {
-    await refreshChannelData()
+    await channel.update()
     emit('success')
     toast.add({ title: t('toast.receiving-method-updated'), description: t('toast.updating-data') })
   }

@@ -20,7 +20,7 @@ const { t } = useI18n()
 const { params } = useRoute('catalog-categorySlug')
 const channel = useChannelStore()
 
-const category = channel.getMenuCategoryBySlug(params.categorySlug)
+const category = channel.getActiveMenuCategoryBySlug(params.categorySlug)
 if (!category) {
   throw createError({
     statusCode: 404,

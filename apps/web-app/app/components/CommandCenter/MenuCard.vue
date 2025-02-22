@@ -26,6 +26,6 @@ const { menuId } = defineProps<{
 }>()
 
 const { icons } = useAppConfig()
-const { menus } = await useChannel()
-const menu = computed(() => menus.value?.find((menu) => menu.id === menuId))
+const channel = useChannelStore()
+const menu = channel.getMenu(menuId)
 </script>

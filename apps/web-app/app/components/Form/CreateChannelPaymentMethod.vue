@@ -48,7 +48,7 @@ const emit = defineEmits(['success'])
 
 const { t } = useI18n()
 const toast = useToast()
-const { refresh: refreshChannelData } = await useChannel()
+const channel = useChannelStore()
 
 const state = ref<Partial<ChannelPaymentMethodCreateSchema>>({
   name: undefined,
@@ -84,7 +84,7 @@ async function onSubmit(event: FormSubmitEvent<ChannelPaymentMethodCreateSchema>
   }
 
   if (data.value) {
-    await refreshChannelData()
+    await channel.update()
     emit('success')
     toast.add({ title: t('toast.payment-method-created'), description: t('toast.updating-data') })
     resetState()

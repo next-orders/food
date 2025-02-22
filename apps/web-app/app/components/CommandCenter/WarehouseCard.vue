@@ -16,6 +16,6 @@ const { warehouseId } = defineProps<{
 }>()
 
 const { icons } = useAppConfig()
-const { channel } = await useChannel()
-const warehouse = computed(() => channel.value?.warehouses.find((w) => w.id === warehouseId))
+const channel = useChannelStore()
+const warehouse = computed(() => channel.warehouses.find((w) => w.id === warehouseId))
 </script>

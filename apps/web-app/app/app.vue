@@ -27,10 +27,9 @@ useHead({
 
 // Init Stores
 const channel = useChannelStore()
-await channel.fetchData()
+await channel.update()
 
 if (!channel.isInitialized) {
-  // Need to init channel
   await navigateTo('/welcome')
 }
 </script>

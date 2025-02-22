@@ -77,7 +77,7 @@ const emit = defineEmits(['success'])
 
 const { t } = useI18n()
 const toast = useToast()
-const { refresh: refreshChannelData } = await useChannel()
+const channel = useChannelStore()
 
 const form = useTemplateRef('form')
 useClearFormI18n(form)
@@ -113,7 +113,7 @@ async function onSubmit(event: FormSubmitEvent<ChannelCreateSchema>) {
   }
 
   if (data.value) {
-    await refreshChannelData()
+    await channel.update()
     emit('success')
     toast.add({ title: t('toast.website-configured'), description: t('toast.updating-data') })
   }

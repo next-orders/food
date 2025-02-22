@@ -107,7 +107,6 @@ const emit = defineEmits(['success', 'submitted'])
 const { t } = useI18n()
 const toast = useToast()
 const channel = useChannelStore()
-const { refresh: refreshChannelData } = await useChannel()
 
 const state = ref<Partial<ChannelUpdateSchema>>({
   name: channel.name,
@@ -157,7 +156,7 @@ async function onSubmit(event: FormSubmitEvent<ChannelUpdateSchema>) {
   }
 
   if (data.value) {
-    await refreshChannelData()
+    await channel.update()
     emit('success')
     toast.add({ title: t('toast.website-updated'), description: t('toast.updating-data') })
     resetState()

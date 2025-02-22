@@ -38,9 +38,8 @@ import type { MenuCategoryUpdateSchema } from '@next-orders/core/shared/services
 import type { FormSubmitEvent } from '@nuxt/ui'
 import { menuCategoryUpdateSchema } from '@next-orders/core/shared/services/menu'
 
-const { isOpened, menuId, categoryId } = defineProps<{
+const { isOpened, categoryId } = defineProps<{
   isOpened: boolean
-  menuId: string
   categoryId: string
 }>()
 
@@ -48,20 +47,18 @@ const emit = defineEmits(['success', 'submitted'])
 
 const { t } = useI18n()
 const toast = useToast()
-const { menus, refresh: refreshChannelData } = await useChannel()
-
-const menu = computed(() => menus.value?.find((menu) => menu.id === menuId))
-const category = computed(() => menu.value?.categories?.find((category) => category.id === categoryId))
+const channel = useChannelStore()
+const category = channel.getMenuCategory(categoryId)
 
 const state = ref<Partial<MenuCategoryUpdateSchema>>({
-  name: category.value?.name,
-  slug: category.value?.slug,
+  name: category?.name,
+  slug: category?.slug,
 })
 
 function resetState() {
   state.value = {
-    name: category.value?.name,
-    slug: category.value?.slug,
+    name: category?.name,
+    slug: category?.slug,
   }
 }
 
@@ -89,7 +86,7 @@ async function onSubmit(event: FormSubmitEvent<MenuCategoryUpdateSchema>) {
   }
 
   if (data.value) {
-    await refreshChannelData()
+    await channel.update()
     emit('success')
     toast.add({ title: t('toast.category-updated'), description: t('toast.updating-data') })
     resetState()
