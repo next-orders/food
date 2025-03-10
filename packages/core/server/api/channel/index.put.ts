@@ -18,16 +18,18 @@ export default defineEventHandler(async (event) => {
     const body = await readBody(event)
     const data = channelCreateSchema.parse(body)
 
+    const name = updateLocaleValues([], { locale: data.defaultLocale as Locale, value: data.name })
+
     await createChannel({
       id: channelId,
       slug: channelId,
-      name: data.name,
+      name,
       currencyCode: data.currencyCode as CurrencyCode,
       countryCode: data.countryCode as CountryCode,
       defaultLocale: data.defaultLocale as Locale,
       timeZone: data.timeZone as TimeZone,
-      description: null,
-      conditions: null,
+      description: [],
+      conditions: [],
       phone: null,
       minAmountForDelivery: null,
       isActive: true,

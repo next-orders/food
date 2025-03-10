@@ -6,10 +6,10 @@
           href="/"
           class="font-medium text-xl"
         >
-          {{ channel.name }}
+          {{ getLocaleValue({ values: channel.name, locale, defaultLocale: channel.defaultLocale }) }}
         </NuxtLink>
         <div class="mt-1 text-sm leading-tight">
-          {{ channel.description }}
+          {{ getLocaleValue({ values: channel.description, locale, defaultLocale: channel.defaultLocale }) }}
         </div>
 
         <div v-if="channel.phone" class="mt-4 text-lg leading-tight">

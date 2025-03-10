@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { locale } from './locale'
 
 export const channelCreateSchema = z.object({
   name: z.string().min(2).max(75),
@@ -11,6 +12,7 @@ export const channelCreateSchema = z.object({
 export type ChannelCreateSchema = z.output<typeof channelCreateSchema>
 
 export const channelUpdateSchema = z.object({
+  locale,
   name: z.string().min(2).max(75).optional(),
   description: z.string().min(0).max(150).optional(),
   phone: z.string().max(20).optional(),

@@ -2,7 +2,7 @@
   <UModal :title="checkout?.deliveryMethod === 'DELIVERY' ? $t('app.cart.delivery-details') : $t('app.cart.pickup-details')" :ui="{ footer: 'justify-end' }">
     <template #body>
       <div class="font-sans whitespace-pre-wrap">
-        {{ channel.conditions }}
+        {{ getLocaleValue({ values: channel.conditions, locale, defaultLocale: channel.defaultLocale }) }}
       </div>
 
       <div v-if="channel.minAmountForDelivery && checkout?.deliveryMethod === 'DELIVERY'">
@@ -32,6 +32,7 @@
 </template>
 
 <script setup lang="ts">
+const { locale } = useI18n()
 const channel = useChannelStore()
 const checkout = useCheckoutStore()
 const overlay = useOverlay()

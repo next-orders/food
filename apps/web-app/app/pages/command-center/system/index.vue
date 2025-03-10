@@ -20,36 +20,36 @@
         </div>
 
         <div class="w-full md:max-w-sm flex flex-col gap-2">
-          <div class="bg-white dark:bg-neutral-500 rounded-2xl px-4 py-3">
-            {{ t('center.data.name') }}: <span class="font-semibold">{{ channel.name }}</span>
+          <div class="bg-(--ui-bg-muted) rounded-2xl px-4 py-3">
+            {{ t('center.data.name') }}: <span class="font-semibold">{{ getLocaleValue({ values: channel?.name, locale, defaultLocale: channel?.defaultLocale }) }}</span>
           </div>
-          <div v-if="channel?.description" class="bg-white dark:bg-neutral-500 rounded-2xl px-4 py-3">
-            {{ t('common.description') }}: <span class="font-semibold">{{ channel.description }}</span>
+          <div v-if="channel?.description.length" class="bg-(--ui-bg-muted) rounded-2xl px-4 py-3">
+            {{ t('common.description') }}: <span class="font-semibold">{{ getLocaleValue({ values: channel?.description, locale, defaultLocale: channel?.defaultLocale }) }}</span>
           </div>
-          <div v-if="channel?.phone" class="bg-white dark:bg-neutral-500 rounded-2xl px-4 py-3">
+          <div v-if="channel?.phone" class="bg-(--ui-bg-muted) rounded-2xl px-4 py-3">
             {{ t('center.data.phone') }}: <span class="font-semibold">{{ channel.phone }}</span>
           </div>
-          <div class="bg-white dark:bg-neutral-500 rounded-2xl px-4 py-3">
+          <div class="bg-(--ui-bg-muted) rounded-2xl px-4 py-3">
             {{ t('center.data.currency') }}: <span class="font-semibold">{{ channel.currencyCode }}</span>
           </div>
-          <div class="bg-white dark:bg-neutral-500 rounded-2xl px-4 py-3">
+          <div class="bg-(--ui-bg-muted) rounded-2xl px-4 py-3">
             {{ t('center.data.country') }}: <span class="font-semibold">{{ channel.countryCode }}</span>
           </div>
-          <div class="bg-white dark:bg-neutral-500 rounded-2xl px-4 py-3">
+          <div class="bg-(--ui-bg-muted) rounded-2xl px-4 py-3">
             {{ t('common.language') }}: <span class="font-semibold">{{ channel.defaultLocale }}</span>
           </div>
-          <div class="bg-white dark:bg-neutral-500 rounded-2xl px-4 py-3">
+          <div class="bg-(--ui-bg-muted) rounded-2xl px-4 py-3">
             {{ t('center.data.timezone') }}: <span class="font-semibold">{{ channel.timeZone }}</span>
           </div>
-          <div v-if="channel?.minAmountForDelivery" class="bg-white dark:bg-neutral-500 rounded-2xl px-4 py-3">
+          <div v-if="channel?.minAmountForDelivery" class="bg-(--ui-bg-muted) rounded-2xl px-4 py-3">
             {{ t('app.minimum-order-value') }}: <span class="font-semibold">{{ channel.minAmountForDelivery }} {{ channel.currencySign }}</span>
           </div>
 
-          <div v-if="channel?.conditions" class="text-sm whitespace-pre-wrap w-full md:max-w-sm bg-white dark:bg-neutral-500 rounded-2xl px-4 py-3">
+          <div v-if="channel?.conditions.length" class="text-sm whitespace-pre-wrap w-full md:max-w-sm bg-(--ui-bg-muted) rounded-2xl px-4 py-3">
             <p class="mb-2 text-base">
               {{ t('center.data.delivery-conditions') }}:
             </p>
-            <div>{{ channel.conditions }}</div>
+            <div>{{ getLocaleValue({ values: channel.conditions, locale, defaultLocale: channel.defaultLocale }) }}</div>
           </div>
         </div>
       </div>
@@ -60,11 +60,11 @@
         </h2>
 
         <div class="space-y-2 w-full md:max-w-sm">
-          <div class="w-full flex flex-row gap-3 justify-between items-center bg-white dark:bg-neutral-500 rounded-2xl px-4 py-3">
+          <div class="w-full flex flex-row gap-3 justify-between items-center bg-(--ui-bg-muted) rounded-2xl px-4 py-3">
             <FormUpdateChannelReceivingMethod :is-active="channel.isDeliveryAvailable" method="DELIVERY" />
           </div>
 
-          <div class="w-full flex flex-row gap-3 justify-between items-center bg-white dark:bg-neutral-500 rounded-2xl px-4 py-3">
+          <div class="w-full flex flex-row gap-3 justify-between items-center bg-(--ui-bg-muted) rounded-2xl px-4 py-3">
             <FormUpdateChannelReceivingMethod :is-active="channel.isPickupAvailable" method="PICKUP" />
           </div>
         </div>
@@ -90,7 +90,7 @@
           <div
             v-for="workingDay in channel.workingDays"
             :key="workingDay.day"
-            class="w-full flex flex-row gap-3 justify-between items-center bg-white dark:bg-neutral-500 rounded-2xl px-4 py-3"
+            class="w-full flex flex-row gap-3 justify-between items-center bg-(--ui-bg-muted) rounded-2xl px-4 py-3"
           >
             <FormUpdateWorkingDayActivity :is-active="workingDay.isActive" :day="workingDay.day" />
 
@@ -128,7 +128,7 @@ definePageMeta({
   middleware: ['02-staff'],
 })
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const overlay = useOverlay()
 const modalUpdateChannel = overlay.create(ModalUpdateChannel)
 const modalUpdateWorkingDays = overlay.create(ModalUpdateWorkingDays)

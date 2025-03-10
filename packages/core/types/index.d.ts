@@ -4,9 +4,9 @@ declare global {
     createdAt: string
     updatedAt: string
     slug: string
-    name: string
-    description: string | null
-    conditions: string | null
+    name: LocaleValue[]
+    description: LocaleValue[]
+    conditions: LocaleValue[]
     phone: string | null
     currencyCode: CurrencyCode
     countryCode: CountryCode

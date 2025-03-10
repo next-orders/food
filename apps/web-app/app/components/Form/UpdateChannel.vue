@@ -6,16 +6,29 @@
     @submit="onSubmit"
   >
     <UFormField :label="$t('center.data.name')" name="name">
-      <UInput
-        v-model="state.name"
-        size="xl"
-        class="w-full items-center justify-center"
-      />
+      <UButtonGroup class="w-full">
+        <UDropdownMenu :items="localeState.items">
+          <UButton
+            color="neutral"
+            variant="outline"
+            :icon="localeState.icon.value"
+            class="w-12 items-center justify-center"
+          />
+        </UDropdownMenu>
+
+        <UInput
+          v-model="state.name"
+          :placeholder="defaultName"
+          size="xl"
+          class="grow"
+        />
+      </UButtonGroup>
     </UFormField>
 
     <UFormField :label="$t('common.description')" name="description">
       <UTextarea
         v-model="state.description"
+        :placeholder="defaultDescription"
         size="xl"
         class="w-full items-center justify-center"
       />
@@ -85,6 +98,7 @@
     <UFormField :label="$t('center.data.delivery-conditions')" name="conditions">
       <UTextarea
         v-model="state.conditions"
+        :placeholder="defaultConditions"
         :rows="10"
         size="xl"
         class="w-full items-center justify-center"
@@ -116,10 +130,17 @@ const { t } = useI18n()
 const toast = useToast()
 const channel = useChannelStore()
 
+const localeState = useLocalizedState(resetState)
+
+const defaultName = channel.name.find((name) => name.locale === channel.defaultLocale)?.value
+const defaultDescription = channel.description.find((description) => description.locale === channel.defaultLocale)?.value
+const defaultConditions = channel.conditions.find((condition) => condition.locale === channel.defaultLocale)?.value
+
 const state = ref<Partial<ChannelUpdateSchema>>({
-  name: channel.name,
-  description: channel.description ?? undefined,
-  conditions: channel.conditions ?? undefined,
+  locale: localeState.locale.value,
+  name: channel.name.find((name) => name.locale === localeState.locale.value)?.value,
+  description: channel.description.find((description) => description.locale === localeState.locale.value)?.value,
+  conditions: channel.conditions.find((condition) => condition.locale === localeState.locale.value)?.value,
   phone: channel.phone ?? undefined,
   countryCode: channel.countryCode,
   currencyCode: channel.currencyCode,
@@ -130,9 +151,10 @@ const state = ref<Partial<ChannelUpdateSchema>>({
 
 function resetState() {
   state.value = {
-    name: channel.name,
-    description: channel.description ?? undefined,
-    conditions: channel.conditions ?? undefined,
+    locale: localeState.locale.value,
+    name: channel.name.find((name) => name.locale === localeState.locale.value)?.value,
+    description: channel.description.find((description) => description.locale === localeState.locale.value)?.value,
+    conditions: channel.conditions.find((condition) => condition.locale === localeState.locale.value)?.value,
     phone: channel.phone ?? undefined,
     countryCode: channel.countryCode,
     currencyCode: channel.currencyCode,

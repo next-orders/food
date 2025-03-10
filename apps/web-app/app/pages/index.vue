@@ -3,10 +3,10 @@
   <MaintenanceMessage v-if="channel.isOnMaintenance" />
 
   <h1 class="mb-2 text-3xl md:text-4xl font-medium">
-    {{ channel.name }}
+    {{ getLocaleValue({ values: channel.name, locale, defaultLocale: channel.defaultLocale }) }}
   </h1>
   <div class="mb-8">
-    {{ channel.description }}
+    {{ getLocaleValue({ values: channel.description, locale, defaultLocale: channel.defaultLocale }) }}
   </div>
 
   <CategoryBlock
@@ -18,15 +18,16 @@
 </template>
 
 <script setup lang="ts">
+const { locale } = useI18n()
 const { user } = useUserSession()
 const channel = useChannelStore()
 
 useHead({
-  title: channel.name,
+  title: getLocaleValue({ values: channel.name, locale: locale.value, defaultLocale: channel.defaultLocale }),
   meta: [
     {
       name: 'description',
-      content: channel.description,
+      content: getLocaleValue({ values: channel.description, locale: locale.value, defaultLocale: channel.defaultLocale }),
     },
   ],
 })

@@ -16,7 +16,7 @@ catalog:
   '@neoconfetti/vue': ^2.2.1
   '@nuxt/devtools': ^2.1.0
   '@nuxt/image': ^1.9.0
-  '@nuxt/ui': 3.0.0-beta.3
+  '@nuxt/ui': 3.0.0-beta.2
   '@nuxtjs/i18n': ^9.2.1
   '@paralleldrive/cuid2': ^2.2.2
   '@pinia/nuxt': ^0.10.1
